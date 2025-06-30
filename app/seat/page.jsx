@@ -156,7 +156,7 @@ const RoundTableSeat = () => {
             disabled={!hasAvailableSeats}
             aria-label="Join the conference table"
           >
-            Join Table
+            Book Seat
           </button>
 
           <button
@@ -169,7 +169,7 @@ const RoundTableSeat = () => {
             disabled={!hasOccupiedSeats}
             aria-label="Leave the conference table"
           >
-            Leave Table
+            Cancel
           </button>
         </div>
       </main>
