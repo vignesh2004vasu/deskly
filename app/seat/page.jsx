@@ -82,19 +82,20 @@ const RoundTableSeat = () => {
   const hasOccupiedSeats = occupiedSeats.includes(true);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col lg:flex-row items-start justify-center px-6 py-10 gap-12">
-      <aside className="w-full lg:w-[300px] text-center lg:text-left">
+    <div className="flex h-screen w-full">
+      {/* Left Side - Info Section */}
+      <div className="w-1/3  text-white flex flex-col justify-center items-center px-10">
         <Image
           src="/goml.png"
-          width={500}
-          height={500}
+          width={300}
+          height={300}
           className="bg-white p-2 rounded-2xl"
           alt="Picture of the author"
         />
 
-        <h1 className="text-4xl  mt-2 font-bold mb-6">Seat Allocation</h1>
+        <h1 className="text-4xl font-bold mt-6 mb-4">Seat Allocation</h1>
 
-        <div className="mb-6 px-6 py-4 rounded-lg bg-slate-800 shadow-lg border border-slate-700">
+        <div className="bg-slate-800 px-6 py-4 rounded-lg shadow-lg border border-slate-700 mb-4 w-full max-w-md text-center">
           <p className="text-sm text-gray-400">
             Today: <span className="text-white font-medium">{today}</span>
           </p>
@@ -103,14 +104,12 @@ const RoundTableSeat = () => {
           </p>
         </div>
 
-        <div className="mt-4 text-sm text-gray-400">
-          <span>
-            {occupiedSeats.filter(Boolean).length} of 12 seats occupied
-          </span>
-        </div>
-      </aside>
+        <p className="text-sm text-gray-400">
+          {occupiedSeats.filter(Boolean).length} of 12 seats occupied
+        </p>
+      </div>
 
-      <main className="flex flex-col items-center flex-1 mt-20">
+      <div className="w-2/3 bg-gradient-to-r from-amber-200 via-amber-500 to-amber-900 text-white flex flex-col justify-center items-center px-10">
         <div className="relative w-[450px] h-[450px] bg-gradient-to-br from-[#6b4423] to-[#4a2c18] rounded-full border-4 border-[#8B4513] shadow-2xl">
           {seatPositions.map((position, seatIndex) => (
             <div
@@ -121,9 +120,6 @@ const RoundTableSeat = () => {
                 left: position.left,
                 transform: `${position.transform} translate(-50%, -50%)`,
               }}
-              aria-label={`Seat ${seatIndex + 1} - ${
-                occupiedSeats[seatIndex] ? "Occupied" : "Available"
-              }`}
             >
               <Lottie
                 animationData={deskAnimation}
@@ -139,7 +135,7 @@ const RoundTableSeat = () => {
           ))}
         </div>
 
-        <div className="flex gap-6 mt-20 flex-wrap justify-center">
+        <div className="flex gap-6 mt-10 flex-wrap justify-center">
           {hasAvailableSeats && (
             <p className="text-green-400 font-semibold text-lg animate-blink mt-4">
               ✅ Seat Available
@@ -149,12 +145,10 @@ const RoundTableSeat = () => {
           <button
             onClick={handleJoinTable}
             className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg 
-                     hover:bg-emerald-500 active:bg-emerald-700 
-                     disabled:bg-gray-600 disabled:cursor-not-allowed
-                     transition-colors duration-200 ease-in-out
-                     focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                 hover:bg-emerald-500 active:bg-emerald-700 
+                 disabled:bg-gray-600 disabled:cursor-not-allowed
+                 transition-colors duration-200 ease-in-out"
             disabled={!hasAvailableSeats}
-            aria-label="Join the conference table"
           >
             Book Seat
           </button>
@@ -162,17 +156,15 @@ const RoundTableSeat = () => {
           <button
             onClick={handleLeaveTable}
             className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg 
-                     hover:bg-red-500 active:bg-red-700 
-                     disabled:bg-gray-600 disabled:cursor-not-allowed
-                     transition-colors duration-200 ease-in-out
-                     focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                 hover:bg-red-500 active:bg-red-700 
+                 disabled:bg-gray-600 disabled:cursor-not-allowed
+                 transition-colors duration-200 ease-in-out"
             disabled={!hasOccupiedSeats}
-            aria-label="Leave the conference table"
           >
             Cancel
           </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
