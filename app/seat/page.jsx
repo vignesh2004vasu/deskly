@@ -5,7 +5,7 @@ import deskAnimation from "../models/desk.json";
 import Image from "next/image";
 
 const RoundTableSeat = () => {
-  const [occupiedSeats, setOccupiedSeats] = useState([true, true, true, false]);
+  const [isBottomSeatOccupied, setIsBottomSeatOccupied] = useState(false);
   const [today, setToday] = useState("");
   const [tomorrow, setTomorrow] = useState("");
 
@@ -31,33 +31,11 @@ const RoundTableSeat = () => {
     setTomorrow(formattedTomorrow);
   }, []);
 
-  const handleJoinTable = () => {
-    const availableSeatIndex = occupiedSeats.findIndex((seat) => !seat);
-    if (availableSeatIndex !== -1) {
-      setOccupiedSeats((prevSeats) =>
-        prevSeats.map((seat, index) =>
-          index === availableSeatIndex ? true : seat
-        )
-      );
-    }
-  };
-
-  const handleLeaveTable = () => {
-    const lastOccupiedIndex = occupiedSeats.lastIndexOf(true);
-    if (lastOccupiedIndex !== -1) {
-      setOccupiedSeats((prevSeats) =>
-        prevSeats.map((seat, index) =>
-          index === lastOccupiedIndex ? false : seat
-        )
-      );
-    }
-  };
-
-  const getAnimationSegment = (isOccupied, seatIndex) => {
+  const getAnimationSegment = (seatIndex) => {
     if (seatIndex === 3) {
-      return isOccupied ? [57, 120] : [48, 49];
+      return isBottomSeatOccupied ? [57, 120] : [48, 49]; // dynamic
     }
-    return [57, 120];
+    return [57, 120]; // always occupied
   };
 
   const getTomorrowDate = () => {
@@ -78,9 +56,6 @@ const RoundTableSeat = () => {
     { top: "90%", left: "50%", transform: "rotate(0deg)" },
   ];
 
-  const hasAvailableSeats = occupiedSeats.includes(false);
-  const hasOccupiedSeats = occupiedSeats.includes(true);
-
   return (
     <div className="flex h-screen w-full">
       {/* Left Side - Info Section */}
@@ -93,23 +68,30 @@ const RoundTableSeat = () => {
           alt="Picture of the author"
         />
 
-        <h1 className="text-4xl font-bold mt-6 mb-4">Seat Allocation</h1>
+        <h1 className="text-4xl font-bold mt-6 mb-4 text-orange-500">
+          Seat Allocation
+        </h1>
 
-        <div className="bg-slate-800 px-6 py-4 rounded-lg shadow-lg border border-slate-700 mb-4 w-full max-w-md text-center">
-          <p className="text-sm text-gray-400">
-            Today: <span className="text-white font-medium">{today}</span>
+        <div className="bg-orange-400 px-6 py-4 rounded-lg shadow-lg border border-orange-500 mb-4 w-full max-w-md text-center">
+          <p className="text-sm font-semibold text-black">
+            Today: <span className="text-black font-medium">{today}</span>
           </p>
-          <p className="text-lg font-semibold text-emerald-400 mt-1">
+          <p className="text-lg font-semibold text-black mt-1">
             Allocating seats for: {tomorrow}
           </p>
         </div>
 
-        <p className="text-sm text-gray-400">
-          {occupiedSeats.filter(Boolean).length} of 12 seats occupied
+        <p className="text-sm text-black font-semibold">
+          Seat is{" "}
+          {isBottomSeatOccupied ? (
+            <span className="text-red-600">not available</span>
+          ) : (
+            <span className="text-green-600">available</span>
+          )}
         </p>
       </div>
 
-      <div className="w-2/3 bg-gradient-to-r from-amber-200 via-amber-500 to-amber-900 text-white flex flex-col justify-center items-center px-10">
+      <div className="w-2/3 bg-gradient-to-t from-orange-300 via-orange-500 to-orange-700 text-white flex flex-col justify-center items-center px-10">
         <div className="relative w-[450px] h-[450px] bg-gradient-to-br from-[#6b4423] to-[#4a2c18] rounded-full border-4 border-[#8B4513] shadow-2xl">
           {seatPositions.map((position, seatIndex) => (
             <div
@@ -125,41 +107,32 @@ const RoundTableSeat = () => {
                 animationData={deskAnimation}
                 loop
                 autoplay
-                initialSegment={getAnimationSegment(
-                  occupiedSeats[seatIndex],
-                  seatIndex
-                )}
+                initialSegment={getAnimationSegment(seatIndex)}
                 style={{ width: "100%", height: "100%" }}
               />
             </div>
           ))}
         </div>
 
-        <div className="flex gap-6 mt-10 flex-wrap justify-center">
-          {hasAvailableSeats && (
-            <p className="text-green-400 font-semibold text-lg animate-blink mt-4">
-              ✅ Seat Available
-            </p>
-          )}
-
+        <div className="flex gap-6 mt-16 flex-wrap items-center justify-center">
           <button
-            onClick={handleJoinTable}
+            onClick={() => setIsBottomSeatOccupied(true)}
             className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg 
-                 hover:bg-emerald-500 active:bg-emerald-700 
-                 disabled:bg-gray-600 disabled:cursor-not-allowed
-                 transition-colors duration-200 ease-in-out"
-            disabled={!hasAvailableSeats}
+         hover:bg-emerald-500 active:bg-emerald-700 
+         disabled:bg-gray-600 disabled:cursor-not-allowed
+         transition-colors duration-200 ease-in-out"
+            disabled={isBottomSeatOccupied}
           >
             Book Seat
           </button>
 
           <button
-            onClick={handleLeaveTable}
+            onClick={() => setIsBottomSeatOccupied(false)}
             className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg 
-                 hover:bg-red-500 active:bg-red-700 
-                 disabled:bg-gray-600 disabled:cursor-not-allowed
-                 transition-colors duration-200 ease-in-out"
-            disabled={!hasOccupiedSeats}
+         hover:bg-red-500 active:bg-red-700 
+         disabled:bg-gray-600 disabled:cursor-not-allowed
+         transition-colors duration-200 ease-in-out"
+            disabled={!isBottomSeatOccupied}
           >
             Cancel
           </button>
