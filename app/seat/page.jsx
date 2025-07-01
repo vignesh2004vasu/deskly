@@ -33,20 +33,9 @@ const RoundTableSeat = () => {
 
   const getAnimationSegment = (seatIndex) => {
     if (seatIndex === 3) {
-      return isBottomSeatOccupied ? [57, 120] : [48, 49]; // dynamic
+      return isBottomSeatOccupied ? [57, 120] : [48, 49];
     }
-    return [57, 120]; // always occupied
-  };
-
-  const getTomorrowDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toLocaleDateString(undefined, {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    return [57, 120];
   };
 
   const seatPositions = [
@@ -57,18 +46,17 @@ const RoundTableSeat = () => {
   ];
 
   return (
-    <div className="flex h-screen w-full">
-      {/* Left Side - Info Section */}
-      <div className="w-1/3  text-white flex flex-col justify-center items-center px-10">
+    <div className="flex flex-col lg:flex-row h-full min-h-screen w-full">
+      <div className="w-full lg:w-1/3 text-white flex flex-col justify-center items-center px-6 py-10">
         <Image
           src="/goml.png"
-          width={300}
-          height={300}
+          width={250}
+          height={250}
           className="bg-white p-2 rounded-2xl"
-          alt="Picture of the author"
+          alt="Logo"
         />
 
-        <h1 className="text-4xl font-bold mt-6 mb-4 text-orange-500">
+        <h1 className="text-3xl font-bold mt-6 mb-4 text-orange-500">
           Seat Allocation
         </h1>
 
@@ -91,12 +79,12 @@ const RoundTableSeat = () => {
         </p>
       </div>
 
-      <div className="w-2/3 bg-gradient-to-t from-orange-300 via-orange-500 to-orange-700 text-white flex flex-col justify-center items-center px-10">
-        <div className="relative w-[450px] h-[450px] bg-gradient-to-br from-[#6b4423] to-[#4a2c18] rounded-full border-4 border-[#8B4513] shadow-2xl">
+      <div className="w-full lg:w-2/3 bg-gradient-to-t from-orange-300 via-orange-500 to-orange-700 text-white flex flex-col justify-center items-center px-4 py-10">
+        <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[450px] md:h-[450px] bg-gradient-to-br from-[#6b4423] to-[#4a2c18] rounded-full border-4 border-[#8B4513] shadow-2xl">
           {seatPositions.map((position, seatIndex) => (
             <div
               key={`seat-${seatIndex}`}
-              className="absolute w-60 h-40"
+              className="absolute w-40 h-32 sm:w-52 sm:h-36 md:w-60 md:h-40"
               style={{
                 top: position.top,
                 left: position.left,
@@ -114,13 +102,13 @@ const RoundTableSeat = () => {
           ))}
         </div>
 
-        <div className="flex gap-6 mt-16 flex-wrap items-center justify-center">
+        <div className="flex gap-4 mt-10 flex-wrap items-center justify-center">
           <button
             onClick={() => setIsBottomSeatOccupied(true)}
             className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg 
-         hover:bg-emerald-500 active:bg-emerald-700 
-         disabled:bg-gray-600 disabled:cursor-not-allowed
-         transition-colors duration-200 ease-in-out"
+              hover:bg-emerald-500 active:bg-emerald-700 
+              disabled:bg-gray-600 disabled:cursor-not-allowed
+              transition-colors duration-200 ease-in-out"
             disabled={isBottomSeatOccupied}
           >
             Book Seat
@@ -129,9 +117,9 @@ const RoundTableSeat = () => {
           <button
             onClick={() => setIsBottomSeatOccupied(false)}
             className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg 
-         hover:bg-red-500 active:bg-red-700 
-         disabled:bg-gray-600 disabled:cursor-not-allowed
-         transition-colors duration-200 ease-in-out"
+              hover:bg-red-500 active:bg-red-700 
+              disabled:bg-gray-600 disabled:cursor-not-allowed
+              transition-colors duration-200 ease-in-out"
             disabled={!isBottomSeatOccupied}
           >
             Cancel
